@@ -52,8 +52,12 @@ app.post('/', function (req, res) {
                 if ((enemy_state.x == self_state.x) && (enemy_state.y < self_state.y) && ((self_state.y - enemy_state.y) < 3)) {
                   console.log("Found near enemy: " + enemy_url + " " + enemy_state.x + "," + enemy_state.y + " in direction N");
                   enemy_found = true;
+                } else if ((enemy_state.x == self_state.x) && (enemy_state.y < self_state.y)) {
+                  console.log("Found enemy on same axis: " + enemy_url + " " + enemy_state.x + "," + enemy_state.y + " in direction N");
+                  enemy_same_axis = true;
                 }
             }
+
         }
         break;
     case "W":
@@ -65,6 +69,9 @@ app.post('/', function (req, res) {
                 if ((enemy_state.x < self_state.x) && (enemy_state.y == self_state.y) && ((self_state.x - enemy_state.x) < 3)) {
                   console.log("Found enemy: " + enemy_url + " " + enemy_state.x + "," + enemy_state.y + " in direction W");
                   enemy_found = true;
+                } else if ((enemy_state.x < self_state.x) && (enemy_state.y == self_state.y)) {
+                    console.log("Found enemy on same axis: " + enemy_url + " " + enemy_state.x + "," + enemy_state.y + " in direction W");
+                    enemy_same_axis = true;
                 }
             }
         }
@@ -78,6 +85,9 @@ app.post('/', function (req, res) {
                 if ((enemy_state.x > self_state.x) && (enemy_state.y == self_state.y) && ((enemy_state.x - self_state.x) < 3)) {
                   console.log("Found enemy: " + enemy_url + " " + enemy_state.x + "," + enemy_state.y + " in direction E");
                   enemy_found = true;
+                } else if ((enemy_state.x > self_state.x) && (enemy_state.y == self_state.y)) {
+                    console.log("Found enemy on same axis: " + enemy_url + " " + enemy_state.x + "," + enemy_state.y + " in direction E");
+                    enemy_same_axis = true;
                 }
             }
         }
@@ -91,6 +101,9 @@ app.post('/', function (req, res) {
                 if ((enemy_state.x == self_state.x) && (enemy_state.y - self_state.y) && ((enemy_state.y - self_state.y) < 3)) {
                   console.log("Found enemy: " + enemy_url + " " + enemy_state.x + "," + enemy_state.y + " in direction S");
                   enemy_found = true;
+                } else if ((enemy_state.x == self_state.x) && (enemy_state.y - self_state.y)) {
+                    console.log("Found enemy on same axis: " + enemy_url + " " + enemy_state.x + "," + enemy_state.y + " in direction S");
+                    enemy_same_axis = true;
                 }
             }
         }
@@ -100,9 +113,12 @@ app.post('/', function (req, res) {
       console.log("Throwing");
       response_body = "T";
   }
-  else {
-      console.log("No enemy found, make random move");
-      const moves = ['F', 'L', 'R'];
+  else if (enemy_same_axis) {
+      console.log("Moving Forward");
+      response_body = "F";
+  } else {
+      console.log("No enemy found, turning in random direction");
+      const moves = ['L', 'R'];
       response_body = moves[Math.floor(Math.random() * moves.length)];
   }
   res.send(response_body);
