@@ -98,7 +98,7 @@ app.post('/', function (req, res) {
         for (var enemy_url in req.body.arena.state) {
             if (enemy_url != self_url) {
                 var enemy_state = req.body.arena.state[enemy_url];
-                if ((enemy_state.x == self_state.x) && (enemy_state.y - self_state.y) && ((enemy_state.y - self_state.y) < 3)) {
+                if ((enemy_state.x == self_state.x) && (enemy_state.y > self_state.y) && ((enemy_state.y - self_state.y) < 3)) {
                   console.log("Found enemy: " + enemy_url + " " + enemy_state.x + "," + enemy_state.y + " in direction S");
                   enemy_found = true;
                 } else if ((enemy_state.x == self_state.x) && (enemy_state.y - self_state.y)) {
